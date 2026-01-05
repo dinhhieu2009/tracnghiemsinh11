@@ -1,0 +1,1923 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đề Trắc Nghiệm Sinh Học 11 - Cuối HKI</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f7ff;
+            color: #333;
+            line-height: 1.6;
+            padding: 10px;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            position: relative;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #4a90e2;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            background-color: #e8f4fc;
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .timer {
+            font-weight: bold;
+            color: #e74c3c;
+            font-size: 1.2rem;
+        }
+        
+        .question-counter {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .score {
+            font-weight: bold;
+            color: #27ae60;
+        }
+        
+        .question-container {
+            margin-bottom: 25px;
+        }
+        
+        .question-number {
+            font-weight: bold;
+            color: #3498db;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+        
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .option {
+            padding: 14px;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .option:hover {
+            background-color: #f0f7ff;
+            border-color: #a0c8ff;
+        }
+        
+        .option.selected {
+            border-color: #3498db;
+            background-color: #e8f4fc;
+        }
+        
+        .option.correct {
+            border-color: #27ae60;
+            background-color: #d5f4e6;
+        }
+        
+        .option.incorrect {
+            border-color: #e74c3c;
+            background-color: #fdeaea;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: #d5f4e6;
+            color: #27ae60;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .feedback.incorrect {
+            background-color: #fdeaea;
+            color: #e74c3c;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        #prevBtn {
+            background-color: #95a5a6;
+            color: white;
+        }
+        
+        #prevBtn:hover {
+            background-color: #7f8c8d;
+        }
+        
+        #nextBtn {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        #nextBtn:hover {
+            background-color: #2980b9;
+        }
+        
+        #submitBtn {
+            background-color: #27ae60;
+            color: white;
+            display: none;
+        }
+        
+        #submitBtn:hover {
+            background-color: #219653;
+        }
+        
+        #restartBtn {
+            background-color: #e74c3c;
+            color: white;
+            display: none;
+        }
+        
+        #restartBtn:hover {
+            background-color: #c0392b;
+        }
+        
+        .result-container {
+            display: none;
+            text-align: center;
+            padding: 25px;
+            background-color: #f8fafc;
+            border-radius: 15px;
+            margin-top: 20px;
+            border-top: 5px solid #3498db;
+        }
+        
+        .result-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .score-display {
+            font-size: 2.5rem;
+            color: #e74c3c;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        .result-details {
+            text-align: left;
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: #27ae60;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.3rem;
+            }
+            
+            .info-bar {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .question-text {
+                font-size: 1rem;
+                padding: 12px;
+            }
+            
+            .option {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+            
+            button {
+                padding: 10px 15px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ĐỀ TRẮC NGHIỆM SINH HỌC 11 - CUỐI HỌC KÌ I</h1>
+            <p>Thời gian: 120 phút | Tổng số câu: 106</p>
+        </header>
+        
+        <div class="info-bar">
+            <div class="timer">Thời gian: <span id="minutes">120</span>:<span id="seconds">00</span></div>
+            <div class="question-counter">Câu: <span id="current-question">1</span>/<span id="total-questions">106</span></div>
+            <div class="score">Điểm: <span id="current-score">0</span>/106</div>
+        </div>
+        
+        <div class="question-container">
+            <div class="question-number">Câu <span id="q-number">1</span>:</div>
+            <div class="question-text" id="question-text"></div>
+            
+            <div class="options-container" id="options-container">
+                <!-- Các tùy chọn sẽ được thêm bằng JavaScript -->
+            </div>
+            
+            <div class="feedback" id="feedback"></div>
+        </div>
+        
+        <div class="navigation">
+            <button id="prevBtn">Câu trước</button>
+            <button id="nextBtn">Câu tiếp theo</button>
+            <button id="submitBtn">Nộp bài</button>
+            <button id="restartBtn">Làm lại</button>
+        </div>
+        
+        <div class="result-container" id="result-container">
+            <h2 class="result-title">KẾT QUẢ BÀI THI</h2>
+            <div class="score-display" id="final-score">0/106</div>
+            <div class="progress-bar">
+                <div class="progress" id="progress-bar"></div>
+            </div>
+            <p>Đã hoàn thành: <span id="correct-count">0</span>/106 câu đúng</p>
+            <div class="result-details">
+                <p><strong>Thời gian hoàn thành:</strong> <span id="time-taken">--:--</span></p>
+                <p><strong>Tỷ lệ đúng:</strong> <span id="percentage">0</span>%</p>
+                <p><strong>Đánh giá:</strong> <span id="evaluation">Chưa có</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dữ liệu câu hỏi được trích xuất từ file Word
+        const questions = [
+            {
+                question: "Đâu không phải là vai trò của nước đối với cơ thể thực vật?",
+                options: [
+                    "Là thành phần cấu tạo của tế bào.",
+                    "Là nguyên liệu, môi trường của các phản ứng sinh hóa.",
+                    "Cấu trúc nên các thành phần của tế bào và điều tiết các quá trình sinh lí.",
+                    "Điều hòa nhiệt độ của cơ thể thực vật."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Nước không trực tiếp 'cấu trúc nên các thành phần của tế bào' mà chỉ là thành phần cấu tạo. Vai trò cấu trúc và điều tiết là quá trình phức tạp hơn."
+            },
+            {
+                question: "Khi thiếu hoặc thừa nguyên tố khoáng, thực vật có biểu hiện là",
+                options: [
+                    "thân, lá cây rũ xuống và héo.",
+                    "biến dạng, thay đổi màu sắc lá, suy giảm kích thước lá, thân, rễ.",
+                    "màu sắc lá không thay đổi, các bộ phận của cây phát triển bình thường.",
+                    "rễ cây bị thối, thân và lá bị héo."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Thiếu hoặc thừa nguyên tố khoáng gây ra các rối loạn sinh trưởng như biến dạng, thay đổi màu sắc lá, suy giảm kích thước các bộ phận của cây."
+            },
+            {
+                question: "Thực vật trên cạn hấp thụ nước và khoáng từ",
+                options: [
+                    "miền lông hút.",
+                    "miền chóp rễ.",
+                    "miền sinh trưởng",
+                    "miền trưởng thành"
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Miền lông hút của rễ có cấu tạo phù hợp với việc hấp thụ nước và khoáng từ đất."
+            },
+            {
+                question: "Rễ hấp thụ khoáng theo cơ chế thụ động phụ",
+                options: [
+                    "sự cung cấp năng lượng của tế bào.",
+                    "các chất mang được hoạt hóa năng lượng",
+                    "hình dạng của phân tử khoáng.",
+                    "sự chênh lệch nồng độ chất khoáng"
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Hấp thụ thụ động phụ thuộc vào sự chênh lệch nồng độ chất khoáng, không cần năng lượng."
+            },
+            {
+                question: "Mạch gỗ được cấu tạo từ hai loại tế bào là",
+                options: [
+                    "quản bào và tế bào kèm.",
+                    "quản bào và mạch ống.",
+                    "ống gỗ và tế bào kèm",
+                    "Ông tây và mạch ông."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Mạch gỗ gồm quản bào và mạch ống, có chức năng vận chuyển nước và muối khoáng từ rễ lên các phần trên của cây."
+            },
+            {
+                question: "Phát biểu nào dưới đây sai khi nói về mạch rây?",
+                options: [
+                    "Mạch rây được cấu tạo từ ống rây và tế bào kèm.",
+                    "Các chất được vận chuyển theo một chiều từ rễ lên lá.",
+                    "Các chất được vận chuyển theo hai chiều, từ lá xuống rễ hoặc ngược lại.",
+                    "Dịch mạch rây có thành phần chính là đường sucrose."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Các chất trong mạch rây được vận chuyển theo hai chiều, không phải một chiều từ rễ lên lá."
+            },
+            {
+                question: "Lượng hơi nước thoát qua khí khổng phụ thuộc vào",
+                options: [
+                    "độ dày của lớp cutin.",
+                    "độ dày của tế bào khí khổng",
+                    "số lượng, sự phân bố và hoạt động đóng mở của khí khổng.",
+                    "số lượng, sự phân bố và độ dày của lớp cutin."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Lượng hơi nước thoát qua khí khổng phụ thuộc chủ yếu vào số lượng, sự phân bố và hoạt động đóng mở của khí khổng."
+            },
+            {
+                question: "Thực vật chỉ có thể hấp thụ được nitrogen ở dạng",
+                options: [
+                    "N₂ tự do trong khí quyển.",
+                    "hợp chất vô cơ.",
+                    "N₂ và NH₃.",
+                    "NH₄⁺ và NO₃⁻"
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Thực vật chỉ hấp thụ được nitrogen ở dạng NH₄⁺ (ammonium) và NO₃⁻ (nitrate), không hấp thụ được N₂ tự do."
+            },
+            {
+                question: "Phát biểu nào sai khi nói về quá trình khử nitrate ở thực vật?",
+                options: [
+                    "Quá trình chuyển nitrogen từ dạng NO₃⁻ thành dạng NH₄⁺ gọi là quá trình khử nitrate.",
+                    "Quá trình khử nitrate có sự tham gia của enzyme nitrite reductase.",
+                    "Enzyme nitrate reductase xúc tác cho phản ứng chuyển NO₃⁻ thành NO₂⁻.",
+                    "Amino acid là sản phẩm cuối cùng của quá trình khử nitrate."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Sản phẩm cuối cùng của quá trình khử nitrate là NH₄⁺ (ammonium), không phải amino acid. Amino acid được tổng hợp từ NH₄⁺."
+            },
+            {
+                question: "Quá trình khử nitrate diễn ra theo sơ đồ nào dưới đây?",
+                options: [
+                    "NO₂⁻ → NO₃⁻ → NH₄⁺",
+                    "NO₃ → NO₂ → NH₃.",
+                    "NO₃⁻ → NO₂⁻ → NH₄⁺",
+                    "NO₃ → NO₂ → NH₂"
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Quá trình khử nitrate diễn ra theo sơ đồ: NO₃⁻ → NO₂⁻ → NH₄⁺."
+            },
+            {
+                question: "Trong giới hạn sinh thái về nhiệt độ của mỗi loài thực vật, tốc độ hấp thụ nước và nguyên tố khoáng",
+                options: [
+                    "tỉ lệ thuận với sự tăng nhiệt độ.",
+                    "không thay đổi khi nhiệt độ tăng hoặc giảm.",
+                    "tỉ lệ nghịch với sự tăng nhiệt độ.",
+                    "không phụ thuộc vào yếu tố nhiệt độ."
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Trong giới hạn sinh thái, tốc độ hấp thụ nước và khoáng tỉ lệ thuận với sự tăng nhiệt độ do các phản ứng enzyme hoạt động mạnh hơn."
+            },
+            {
+                question: "Vì sao trong trồng trọt, người ta thường sử dụng các loại phân vô cơ (đạm, kali) để bón thúc?",
+                options: [
+                    "Vì thành phần dinh dưỡng của chúng ở dạng không hòa tan, cây không sử dụng được ngay mà từ từ hấp thụ.",
+                    "Vì các loại phân này cần có thời gian phân hủy thành các chất hòa tan cây mới sử dụng được.",
+                    "Vì các loại phân này cây có thể hấp thụ được ngay, tỉ lệ dinh dưỡng cao, thúc đẩy cây sinh trưởng và phát triển mạnh.",
+                    "Vì các loại phân này cây có thể hấp thụ được ngay, tỉ lệ và phát triển quá nhanh của cây trồng."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Phân vô cơ cây có thể hấp thụ ngay, dinh dưỡng cao, thúc đẩy sinh trưởng và phát triển mạnh, phù hợp cho bón thúc."
+            },
+            {
+                question: "Khi rễ cây bị ngập úng trong thời gian dài, cây trồng",
+                options: [
+                    "Lá nhỏ, màu vàng, mép phiến lá màu cam.",
+                    "Cây bị còi cọc, chóp lá hóa vàng",
+                    "Xuất hiện vết đốm đen ở lá non và định sinh trưởng.",
+                    "Cây héo, lá rụng dần, thậm chí là chết."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Khi rễ bị ngập úng lâu ngày, cây không hấp thụ được oxygen, nước và dinh dưỡng dẫn đến héo, rụng lá và có thể chết."
+            },
+            {
+                question: "Trong tự nhiên, ở một số cây trồng như cà rốt, khoai tây,.. chất dự trữ trong củ sẽ được vận chuyển lên các cơ quan phía trên trong giai đoạn sinh trưởng, phát triển nào của thực vật?",
+                options: [
+                    "Giai đoạn ra hoa.",
+                    "Giai đoạn kết quả",
+                    "Giai đoạn nảy mầm.",
+                    "Giai đoạn phát triển chiều cao."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Chất dự trữ trong củ được vận chuyển lên cơ quan phía trên trong giai đoạn nảy mầm để cung cấp năng lượng cho cây non phát triển."
+            },
+            {
+                question: "Hệ sắc tố quang hợp ở cây gồm hai nhóm chính là",
+                options: [
+                    "diệp lục và carotenoid.",
+                    "carotenoid và xanthophyll.",
+                    "diệp lục và xanthophyll.",
+                    "xanthophyll và carotene."
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Hệ sắc tố quang hợp gồm hai nhóm chính: diệp lục (hấp thụ ánh sáng chính) và carotenoid (hấp thụ ánh sáng bổ sung và bảo vệ)."
+            },
+            {
+                question: "Đâu không phải là vai trò của quang hợp?",
+                options: [
+                    "Cung cấp nguồn chất hữu cơ là nguyên liệu, nhiên liệu cho các ngành công nghiệp, xây dựng, y dược.",
+                    "Điều hòa trực tiếp lượng nước trong khí quyển.",
+                    "Cung cấp nguồn năng lượng lớn duy trì hoạt động của sinh giới.",
+                    "Cung cấp nguồn chất hữu cơ, đáp ứng nhu cầu dinh dưỡng của hầu hết sinh vật."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Quang hợp không điều hòa trực tiếp lượng nước trong khí quyển mà gián tiếp qua quá trình thoát hơi nước."
+            },
+            {
+                question: "Pha tối sử dụng loại sản phẩm nào của pha sáng?",
+                options: [
+                    "O₂, NADPH, ATP.",
+                    "NADPH, O₂.",
+                    "ATP, NADPH.",
+                    "O₂, ATP."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Pha tối sử dụng ATP và NADPH từ pha sáng để đồng hóa CO₂ thành đường."
+            },
+            {
+                question: "Khi nói về pha tối của quang hợp, phát biểu nào sau đây là đúng?",
+                options: [
+                    "Diễn ra ở màng thylakoid.",
+                    "Không sử dụng nguyên liệu của pha sáng.",
+                    "Sử dụng sản phẩm của pha sáng để đồng hóa CO₂.",
+                    "Giải phóng O₂ trong quá trình phân li nước."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Pha tối sử dụng sản phẩm của pha sáng (ATP, NADPH) để đồng hóa CO₂ thành chất hữu cơ."
+            },
+            {
+                question: "Hợp chất đầu tiên được tạo thành trong chu trình Calvin là",
+                options: [
+                    "ribulose 1,5 biphosphate.",
+                    "pyruvate.",
+                    "oxaloacetic acid.",
+                    "3-Phosphoglyceric acid."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Hợp chất đầu tiên được tạo thành trong chu trình Calvin là 3-Phosphoglyceric acid (3-PGA) từ phản ứng cố định CO₂."
+            },
+            {
+                question: "Giai đoạn quang hợp thực sự tạo nên C₆H₁₂O₆ ở cây mía là giai đoạn nào sau đây?",
+                options: [
+                    "Quang phân li nước.",
+                    "Chu trình Calvin.",
+                    "Pha sáng.",
+                    "Giai đoạn hấp thụ ánh sáng."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Chu trình Calvin là giai đoạn thực sự tạo nên C₆H₁₂O₆ (glucose) từ CO₂ trong quang hợp."
+            },
+            {
+                question: "Nhóm thực vật C₄ được phân bố chủ yếu ở",
+                options: [
+                    "khắp mọi nơi trên Trái Đất.",
+                    "vùng sa mạc.",
+                    "vùng ôn đới và cận nhiệt đới.",
+                    "vùng nhiệt đới và cận nhiệt đới."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Thực vật C₄ phân bố chủ yếu ở vùng nhiệt đới và cận nhiệt đới nơi có cường độ ánh sáng mạnh và nhiệt độ cao."
+            },
+            {
+                question: "Phát biểu nào sai khi nói về con đường cố định CO₂ ở thực vật C₄?",
+                options: [
+                    "Chất nhận CO₂ đầu tiên trong tế bào mô giậu là phosphoenol pyruvate.",
+                    "Diễn ra ở hai loại tế bào là tế bào thịt lá và tế bào bao bó mạch.",
+                    "Sản phẩm cuối cùng được tạo thành là hợp chất 4C.",
+                    "Tế bào bao bó mạch là nơi diễn ra chu trình Calvin."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Sản phẩm cuối cùng của quá trình cố định CO₂ ở thực vật C₄ là các hợp chất hữu cơ (đường), không chỉ là hợp chất 4C. Hợp chất 4C là chất trung gian."
+            },
+            {
+                question: "Thực vật CAM hạn chế sự thoát hơi nước bằng cách",
+                options: [
+                    "đóng khí khổng vào ban ngày và mở vào ban đêm",
+                    "mở khí khổng vào ban ngày và đóng vào ban đêm.",
+                    "mở khí khổng cả ngày và đêm.",
+                    "đóng khí khổng cả ngày và đêm."
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Thực vật CAM đóng khí khổng vào ban ngày để hạn chế thoát hơi nước và mở vào ban đêm để cố định CO₂, thích nghi với môi trường khô hạn."
+            },
+            {
+                question: "Các yếu tố chủ yếu ảnh hưởng đến quang hợp ở thực vật là",
+                options: [
+                    "ánh sáng, chất khoáng và khí O₂.",
+                    "ánh sáng, khí CO₂ và nhiệt độ.",
+                    "ánh sáng, khí O₂ và độ pH.",
+                    "Khí O₂, độ pH và nhiệt độ."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Các yếu tố chủ yếu ảnh hưởng đến quang hợp là ánh sáng (nguồn năng lượng), khí CO₂ (nguyên liệu) và nhiệt độ (ảnh hưởng enzyme)."
+            },
+            {
+                question: "Chu trình Calvin diễn ra ở pha tối trong quang hợp ở nhóm thực vật nào sau đây?",
+                options: [
+                    "Chỉ ở nhóm thực vật C₃.",
+                    "Chỉ ở nhóm thực vật C₄.",
+                    "Ở nhóm thực vật C₄ và CAM.",
+                    "Ở cả 3 nhóm thực vật C₃, C₄ và CAM."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Chu trình Calvin diễn ra ở cả 3 nhóm thực vật C₃, C₄ và CAM, là giai đoạn cố định CO₂ thành chất hữu cơ."
+            },
+            {
+                question: "Tại sao các cây xương rồng, thuốc bỏng... thường sinh trưởng và phát triển chậm hơn so với các cây thuộc nhóm thực vật C₃, C₄?",
+                options: [
+                    "Do cường độ quang hợp và năng suất sinh học thấp.",
+                    "Do cường độ quang hợp và năng suất sinh học cao.",
+                    "Do chúng chỉ có lục lạp ở tế bào mô giậu.",
+                    "Do nhu cầu nước của chúng cao."
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Cây CAM có cường độ quang hợp và năng suất sinh học thấp hơn do chỉ mở khí khổng vào ban đêm để hạn chế mất nước, nên sinh trưởng và phát triển chậm hơn."
+            },
+            {
+                question: "Vì sao một số loài thực vật có lá màu đỏ vẫn có khả năng quang hợp bình thường?",
+                options: [
+                    "Vì lá của chúng vẫn chứa chất diệp lục.",
+                    "Vì lá của chúng không chứa chất diệp lục.",
+                    "Vì các sắc tố đỏ có khả năng hấp thụ ánh sáng mạnh.",
+                    "Vì các sắc tố màu đỏ có chứa diệp lục a"
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Cây có lá màu đỏ vẫn chứa diệp lục, chỉ bị che lấp bởi sắc tố đỏ (anthocyanin), nên vẫn quang hợp được bình thường."
+            },
+            {
+                question: "Hình thức hô hấp chủ yếu ở thực vật là",
+                options: [
+                    "hô hấp kị khí.",
+                    "hô hấp hiếu khí.",
+                    "lên men.",
+                    "hô hấp kị khí và lên men."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Hình thức hô hấp chủ yếu ở thực vật trong điều kiện bình thường là hô hấp hiếu khí, tạo nhiều năng lượng ATP nhất."
+            },
+            {
+                question: "Nhận định nào sau đây không đúng với vai trò của hô hấp?",
+                options: [
+                    "Năng lượng sinh ra từ hô hấp được sử dụng cho hầu hết các hoạt động sống của cây.",
+                    "Nhiệt năng được giải phóng ra trong hô hấp giúp duy trì nhiệt độ cơ thể, đảm bảo hoạt động sống của cơ thể thực vật diễn ra bình thường.",
+                    "Nhiệt năng được giải phóng ra từ hô hấp có thể làm tăng nhiệt độ lá, dẫn đến lá cây héo dần.",
+                    "Hô hấp tạo ra các sản phẩm trung gian là nguyên liệu để tổng hợp nên các hợp chất hữu cơ trong cơ thể."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Nhiệt năng từ hô hấp giúp duy trì nhiệt độ cơ thể, không phải nguyên nhân chính làm lá héo. Lá héo chủ yếu do mất nước."
+            },
+            {
+                question: "Các giai đoạn của hô hấp tế bào diễn ra theo trật tự nào?",
+                options: [
+                    "Đường phân → Oxy hóa pyruvate và chu trình Krebs → Chuỗi truyền electron.",
+                    "Đường phân → Chuỗi truyền electron → Oxy hóa pyruvate và chu trình Krebs.",
+                    "Oxy hóa pyruvate và chu trình Krebs → Đường phân → Chuỗi truyền electron.",
+                    "Chuỗi truyền electron → Oxy hóa pyruvate và chu trình Krebs"
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Trình tự các giai đoạn hô hấp tế bào: Đường phân → Oxy hóa pyruvate và chu trình Krebs → Chuỗi truyền electron."
+            },
+            {
+                question: "Kết thúc quá trình đường phân, từ một phân tử glucose thu được",
+                options: [
+                    "1 phân tử pyruvate, 2 ATP và 4 NADH.",
+                    "4 phân tử pyruvate, 2 ATP và 2 NADH.",
+                    "2 phân tử pyruvate, 6 ATP và 2 NADH.",
+                    "2 phân tử pyruvate, 2 ATP và 2 NADH."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Từ 1 phân tử glucose, đường phân tạo ra 2 phân tử pyruvate, 2 ATP (thu được 4 ATP nhưng tiêu tốn 2 ATP) và 2 NADH."
+            },
+            {
+                question: "Phát biểu nào sai khi nói về hô hấp hiếu khí?",
+                options: [
+                    "Giai đoạn đường phân thu được 2 NADH.",
+                    "Hai phân tử pyruvate được tạo thành từ đường phân được chuyển vào chất nền ti thể và được biến đổi thành 2 phần tử acetyl – CoA.",
+                    "Đường phân là giai đoạn tạo ra nhiều ATP nhất trong quá trình hô hấp.",
+                    "Chu trình Kreb diễn ra trong chất nền của ti thể."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Chuỗi truyền electron mới là giai đoạn tạo ra nhiều ATP nhất (khoảng 28-34 ATP), không phải đường phân (chỉ 2 ATP)."
+            },
+            {
+                question: "Hô hấp hiếu khí và lên men đều có chung giai đoạn nào sau đây?",
+                options: [
+                    "Đường phân.",
+                    "Oxy hóa pyruvate và chu trình Krebs.",
+                    "Chuỗi truyền electron.",
+                    "Tổng hợp acetyl-CoA."
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Cả hô hấp hiếu khí và lên men đều có chung giai đoạn đường phân. Sau đó chúng phân nhánh khác nhau tùy điều kiện oxygen."
+            },
+            {
+                question: "Phát biểu nào đúng khi nói về các con đường hô hấp ở thực vật?",
+                options: [
+                    "Hô hấp kị khí là con đường diễn ra phổ biến ở thực vật trong điều kiện bình thường, có O₂.",
+                    "Lên men xảy ra trong điều kiện có O₂, tạo ra nhiều ATP nhất.",
+                    "Hai con đường hô hấp hiếu khí và lên men đều có chung giai đoạn chuỗi chuyền electron.",
+                    "Lên men là phản ứng thích nghi của cây giúp cây tồn tại tạm thời trong điều kiện thiếu O₂."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Lên men là phản ứng thích nghi giúp cây tồn tại tạm thời trong điều kiện thiếu O₂, tạo ít ATP nhưng duy trì hoạt động sống cơ bản."
+            },
+            {
+                question: "Phát biểu nào sai khi nói về các yếu tố ảnh hưởng đến hô hấp ở thực vật?",
+                options: [
+                    "Nước trong mô, cơ quan, cơ thể thực vật liên quan trực tiếp đến cường độ hô hấp.",
+                    "Trong giới hạn nhất định, khi tăng nhiệt độ thì cường độ hô hấp sẽ giảm.",
+                    "Nồng độ O₂ ảnh hưởng trực tiếp đến cường độ hô hấp do khí O₂ là nguyên liệu của hô hấp.",
+                    "Hàm lượng CO₂ trong không khí cao sẽ ức chế hô hấp hiếu khí, cây chuyển sang con đường lên men."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Trong giới hạn nhất định, khi tăng nhiệt độ thì cường độ hô hấp sẽ tăng (do enzyme hoạt động mạnh hơn), không phải giảm."
+            },
+            {
+                question: "Trong giới hạn nhất định, cường độ hô hấp",
+                options: [
+                    "tỉ lệ thuận với hàm lượng nước.",
+                    "tỉ lệ nghịch với hàm lượng nước.",
+                    "tỉ lệ nghịch với hàm lượng nước ở giai đoạn nảy mầm của cây.",
+                    "không liên quan tới hàm lượng nước."
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Trong giới hạn nhất định, cường độ hô hấp tỉ lệ thuận với hàm lượng nước vì nước là môi trường cho các phản ứng hóa học."
+            },
+            {
+                question: "Trong trồng trọt, cần áp dụng một số biện pháp canh tác như làm đất, làm cỏ, vun gốc nhằm mục đích gì?",
+                options: [
+                    "Nhằm tạo môi trường thoáng khí, cung cấp C cho cây hô hấp kị khí.",
+                    "Nhằm tạo môi trường thoáng khí, cung cấp CO₂ cho cây hô hấp kị khí.",
+                    "Nhằm tạo môi trường thoáng khí, cung cấp O₂ cho cây hô hấp hiếu khí.",
+                    "Nhằm tạo môi trường thoáng khí, cung cấp CO cho cây hô hấp hiếu khí."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Các biện pháp canh tác giúp tạo môi trường thoáng khí, cung cấp O₂ cho rễ hô hấp hiếu khí, tăng hiệu quả hấp thụ nước và dinh dưỡng."
+            },
+            {
+                question: "Quang hợp và hô hấp có mối quan hệ với nhau như thế nào?",
+                options: [
+                    "Quang hợp tạo ra chất hữu cơ và CO₂ cung cấp nguyên liệu cho quá trình hô hấp. Hô hấp tạo ra O₂ được sử dụng làm nguyên liệu cho quang hợp.",
+                    "Quang hợp tạo ra chất hữu cơ và O₂ cung cấp nguyên liệu cho quá trình hô hấp. Hô hấp tạo ra CO₂ được sử dụng làm nguyên liệu cho quang hợp.",
+                    "Hô hấp tạo ra chất hữu cơ và O₂ cung cấp nguyên liệu cho quá trình quang hợp. Quang hợp tạo ra CO₂ được sử dụng làm nguyên liệu cho hô hấp.",
+                    "Hô hấp tạo ra O₂ cung cấp nguyên liệu cho quá trình quang hợp. Quang hợp tạo ra CO₂ và chất hữu cơ được sử dụng làm nguyên liệu cho hô hấp."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Quang hợp tạo chất hữu cơ và O₂ cung cấp cho hô hấp; hô hấp phân giải chất hữu cơ tạo CO₂ và năng lượng, cung cấp CO₂ cho quang hợp."
+            },
+            {
+                question: "Trong quá trình bảo quản nông sản cần phải làm cho hô hấp",
+                options: [
+                    "diễn ra bình thường.",
+                    "tăng đến mức tối đa.",
+                    "giảm đến mức tối thiểu.",
+                    "không còn hoạt động."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Khi bảo quản nông sản, cần giảm hô hấp đến mức tối thiểu để hạn chế hao hụt chất dinh dưỡng, giảm nhiệt độ và độ ẩm."
+            },
+            {
+                question: "Trạng thái nào sau đây có quá trình hô hấp hiếu khí diễn ra mạnh nhất?",
+                options: [
+                    "Hạt phơi khô.",
+                    "Hạt đang nảy mầm.",
+                    "Hạt bị luộc chín.",
+                    "Hạt sấy khô."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Hạt đang nảy mầm có hoạt động trao đổi chất mạnh để cung cấp năng lượng cho quá trình nảy mầm nên hô hấp hiếu khí diễn ra mạnh nhất."
+            },
+            {
+                question: "Tại sao không nên để nhiều hoa và cây xanh trong phòng ngủ?",
+                options: [
+                    "Hoa và cây xanh quang hợp tạo ra nhiều khi O₂ làm tăng cường độ hô hấp trong lúc ngủ.",
+                    "Quá trình hô hấp ở hoa và cây xanh tạo ra nhiều CO₂, làm tăng nồng độ CO₂ trong phòng ngủ, dễ gây ngạt thở trong lúc ngủ.",
+                    "Quá trình hô hấp ở hoa và cây xanh tạo ra nhiều O₂, làm tăng nồng độ O₂ trong phòng ngủ, dễ gây ngạt thở trong lúc ngủ.",
+                    "Hoa và cây xanh tỏa ra mùi hương gây lạ làm rối loạn giấc ngủ."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Ban đêm cây chỉ hô hấp, thải CO₂ và hấp thụ O₂, làm tăng nồng độ CO₂ trong phòng ngủ, có thể gây khó thở, đặc biệt trong phòng kín."
+            },
+            {
+                question: "Tại sao người nông dân thường dùng biện pháp phơi khô để bảo quản hạt trong thời gian dài?",
+                options: [
+                    "Nhiệt độ cao trong quá trình phơi làm chết tế bào, giúp giữ nguyên hình dạng hạt trong thời gian dài.",
+                    "Phơi khô giúp làm giảm lượng nước trong hạt phòng chống ẩm mốc hạt.",
+                    "Phơi khô giúp làm giảm lượng nước trong hạt, quá trình hô hấp của hạt giảm tối thiểu, phòng chống ẩm mốc, giúp bảo quản hạt trong thời gian dài.",
+                    "Nhiệt độ cao trong quá trình phơi giúp ức chế quá trình hô hấp tế bào của hạt và giúp tiêu diệt bào tử nấm mốc xung quanh hạt"
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Phơi khô làm giảm lượng nước, giảm hô hấp tối thiểu (hạt ở trạng thái ngủ), phòng chống ẩm mốc và nảy mầm, giúp bảo quản hạt lâu dài."
+            },
+            {
+                question: "Quá trình dinh dưỡng gồm có các giai đoạn là",
+                options: [
+                    "lấy nước, lấy thức ăn, hấp thụ nước và đồng hóa các chất.",
+                    "lấy thức ăn, tiêu hóa thức ăn, hấp thụ chất dinh dưỡng và đồng hóa các chất.",
+                    "lấy thức ăn, tiêu hóa thức ăn và bài tiết chất thải.",
+                    "tiêu hóa thức ăn, hấp thụ chất dinh dưỡng và đồng hóa các chất."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Quá trình dinh dưỡng gồm: lấy thức ăn, tiêu hóa, hấp thụ chất dinh dưỡng và đồng hóa các chất vào cơ thể."
+            },
+            {
+                question: "Phát biểu nào đúng khi nói về các kiểu lấy thức ăn của động vật?",
+                options: [
+                    "Động vật lấy thức ăn từ môi trường sống theo 2 kiểu chính: ăn lọc và ăn hút.",
+                    "Ăn hút là kiểu lọc nước qua bộ phận chuyên hóa để lấy thức ăn.",
+                    "Động vật lấy thức ăn theo kiểu ăn hút có cấu tạo miệng phù hợp với đục lỗ và hút dịch.",
+                    "Hổ là động vật lấy thức ăn từ môi trường theo kiểu ăn hút."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Động vật ăn hút có cấu tạo miệng phù hợp với đục lỗ và hút dịch (ví dụ: muỗi, rệp, bướm)."
+            },
+            {
+                question: "Phát biểu nào sai khi nói về giai đoạn tiêu hóa thức ăn?",
+                options: [
+                    "Ở động vật chưa có cơ quan tiêu hóa, thức ăn được tiêu hóa ngoại bào.",
+                    "Ở động vật có túi tiêu hóa, thức ăn được tiêu hóa ngoại bào và nội bào.",
+                    "Tiêu hóa thức ăn trong ống tiêu hóa có ở hầu hết động vật không xương sống và có xương sống.",
+                    "Tiêu hóa nội bào là tiêu hóa thức ăn diễn ra bên trong tế bào."
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Ở động vật chưa có cơ quan tiêu hóa (như trùng giày), thức ăn được tiêu hóa nội bào, không phải ngoại bào."
+            },
+            {
+                question: "Trong tiêu hóa nội bào, các mảnh thức ăn nhỏ được tế bào thực bào, sau đó",
+                options: [
+                    "thức ăn được các tế bào của cơ thể hấp thụ ngay.",
+                    "thức ăn được tiêu hóa ngoại bào giúp cơ thể hấp thụ.",
+                    "các enzyme của ống tiêu hóa phân giải thành các chất dinh dưỡng đơn giản mà cơ thể có thể sử dụng được.",
+                    "các enzyme của lysosome phân giải thành các chất dinh dưỡng đơn giản mà cơ thể có thể sử dụng được."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Trong tiêu hóa nội bào, enzyme của lysosome phân giải thức ăn thành chất dinh dưỡng đơn giản ngay bên trong tế bào."
+            },
+            {
+                question: "Quá trình tiêu hóa thức ăn trong hệ tiêu hóa của người diễn ra theo trình tự nào dưới đây?",
+                options: [
+                    "Miệng → ruột non → dạ dày → hầu → ruột già → hậu môn.",
+                    "Miệng → thực quản → dạ dày → ruột non → ruột già → hậu môn.",
+                    "Miệng → ruột non → thực quản → dạ dày → ruột già → hậu môn.",
+                    "Miệng → dạ dày → ruột non → thực quản → ruột già → hậu môn."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Trình tự tiêu hóa ở người: Miệng → thực quản → dạ dày → ruột non → ruột già → hậu môn."
+            },
+            {
+                question: "Enzyme nào dưới đây có trong nước bọt giúp thủy phân tinh bột trong thức ăn thành đường maltose?",
+                options: [
+                    "Enzyme amylase.",
+                    "Enzyme pepsin.",
+                    "Enzyme lactase.",
+                    "Enzyme sucrase"
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Enzyme amylase (ptyalin) trong nước bọt thủy phân tinh bột thành maltose."
+            },
+            {
+                question: "Dịch mật có vai trò quan trọng trong việc tiêu hóa và hấp thụ chất nào sau đây?",
+                options: [
+                    "Protein.",
+                    "Tinh bột.",
+                    "Lipid.",
+                    "Protein và tinh bột"
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Dịch mật có vai trò quan trọng trong tiêu hóa và hấp thụ lipid (chất béo) bằng cách nhũ hóa chất béo thành các giọt nhỏ."
+            },
+            {
+                question: "Các nhu động của ruột non có tác dụng",
+                options: [
+                    "làm nhỏ thức ăn, hấp thụ lại nước và đẩy thức ăn về phía ruột già.",
+                    "nhào trộn thức ăn với enzyme lysosome, đồng thời đẩy thức ăn dịch chuyển trong ruột non về phía ruột già.",
+                    "nhào trộn thức ăn với dịch tụy, dịch mật, dịch ruột, đồng thời đẩy thức ăn dịch chuyển trong ruột non về phía dạ dày.",
+                    "nhào trộn thức ăn với dịch tụy, dịch mật, dịch ruột, đồng thời đẩy thức ăn dịch chuyển trong ruột non về phía ruột già."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Nhu động ruột non nhào trộn thức ăn với dịch tiêu hóa (tụy, mật, ruột) và đẩy thức ăn về phía ruột già."
+            },
+            {
+                question: "Hấp thụ chất dinh dưỡng chủ yếu diễn ra ở",
+                options: [
+                    "Miệng.",
+                    "Dạ dày.",
+                    "Ruột non.",
+                    "Ruột già."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Hấp thụ chất dinh dưỡng chủ yếu diễn ra ở ruột non do cấu trúc có nhiều nhung mao và vi nhung mao tăng diện tích hấp thụ."
+            },
+            {
+                question: "Đặc điểm nào của ruột non tạo ra diện tích hấp thụ rất lớn từ 250 – 300 m²?",
+                options: [
+                    "Ruột non có nhiều nếp gấp và dịch vị.",
+                    "Ruột non có nhiều nếp gấp, lông ruột và vi nhung mao.",
+                    "Có hình ống thẳng dài 20 – 30 cm.",
+                    "Phình to, có nhiều cơ co bóp và vi nhung mao."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Ruột non có nhiều nếp gấp, lông ruột và vi nhung mao tạo diện tích hấp thụ rất lớn (250-300 m²)."
+            },
+            {
+                question: "Chế độ ăn uống khoa học là",
+                options: [
+                    "chế độ ăn uống bổ sung nhiều chất béo và chất xơ.",
+                    "chế độ ăn uống nhiều rau xanh và chất xơ.",
+                    "chế độ ăn uống đủ năng lượng và đủ muối khoáng mà cơ thể cần.",
+                    "chế độ ăn uống đủ năng lượng và đủ các chất mà cơ thể cần."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Chế độ ăn uống khoa học là đủ năng lượng và đủ các chất dinh dưỡng cần thiết (protein, lipid, carbohydrate, vitamin, khoáng, nước) cho cơ thể."
+            },
+            {
+                question: "Đâu không phải là biện pháp để phòng tránh các bệnh về tiêu hóa?",
+                options: [
+                    "Có chế độ ăn đủ chất, đủ lượng.",
+                    "Vận động ngay sau khi ăn để hạn chế hấp thụ chất béo.",
+                    "Đảm bảo vệ sinh an toàn thực phẩm.",
+                    "Hạn chế đồ ăn mặn, đồ chiên xào."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Vận động ngay sau khi ăn không phải là biện pháp phòng tránh bệnh tiêu hóa, thậm chí có thể gây hại (đau dạ dày, trào ngược)."
+            },
+            {
+                question: "Tại sao một số người mắc hội chứng không dung nạp lactose thì không thể tiêu hóa được sữa?",
+                options: [
+                    "Do cơ thể sản xuất quá nhiều enzyme lactase gây ức chế sự tiêu hóa sữa.",
+                    "Do sữa làm ngăn cản quá trình tiêu hóa cơ học trong ruột non.",
+                    "Do cơ thể không có enzyme lactase – enzyme thủy phân lactose.",
+                    "Do cơ thể không có enzyme pepsin – enzyme thủy phân lactose."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Người không dung nạp lactose không có hoặc có ít enzyme lactase để thủy phân lactose trong sữa thành glucose và galactose để hấp thụ."
+            },
+            {
+                question: "Bệnh đau dạ dày có thể phát sinh từ nguyên nhân nào dưới đây?",
+                options: [
+                    "Căng thẳng thần kinh kéo dài.",
+                    "Nhiễm vi khuẩn Helicobacter pylori",
+                    "Do thói quen ăn uống thiếu khoa học.",
+                    "Tất cả các nguyên nhân trên"
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Bệnh đau dạ dày có thể do nhiều nguyên nhân: căng thẳng thần kinh (tăng tiết acid), nhiễm khuẩn H. pylori, thói quen ăn uống không khoa học (ăn nhanh, không đúng giờ)."
+            },
+            {
+                question: "Tại sao cần có chế độ ăn phù hợp với mỗi lứa tuổi, giới tính và tình trạng sinh lí của cơ thể?",
+                options: [
+                    "Vì mỗi lứa tuổi, giới tính và tình trạng sinh lí khác nhau có nhu cầu về chất béo khác nhau.",
+                    "Vì mỗi lứa tuổi, giới tính và tình trạng sinh lí khác nhau có nhu cầu về năng lượng và các chất dinh dưỡng khác nhau.",
+                    "Vì mỗi lứa tuổi, giới tính và tình trạng sinh lí khác nhau có sở thích về ăn uống khác nhau.",
+                    "Vì mỗi lứa tuổi, giới tính và tình trạng sinh lí khác nhau có các bệnh về tiêu hóa khác nhau."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Mỗi lứa tuổi, giới tính và tình trạng sinh lí (trẻ em, thanh thiếu niên, người già, phụ nữ mang thai) có nhu cầu năng lượng và dinh dưỡng khác nhau."
+            },
+            {
+                question: "Phát biểu nào đúng khi nói về vai trò của hô hấp?",
+                options: [
+                    "Hô hấp lấy O₂ từ môi trường cung cấp cho hô hấp tế bào, tạo năng lượng cho hoạt động sống.",
+                    "Hô hấp lấy CO₂ từ môi trường cung cấp cho hô hấp tế bào, tạo năng lượng cho hoạt động sống.",
+                    "Hô hấp thải CO₂ sinh ra từ quá trình chuyển hóa ra ngoài, làm mất cân bằng môi trường trong cơ thể.",
+                    "Hô hấp lấy CO₂ và thải ra O₂ giúp đảm bảo cân bằng môi trường trong cơ thể."
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Hô hấp lấy O₂ từ môi trường cung cấp cho hô hấp tế bào để oxy hóa chất hữu cơ tạo năng lượng ATP, thải CO₂ ra ngoài."
+            },
+            {
+                question: "Ở động vật, bộ phận hoặc cơ quan thực hiện trao đổi khí O₂ và CO₂ với môi trường gọi là",
+                options: [
+                    "ống trao đổi khí.",
+                    "bề mặt trao đổi khí.",
+                    "áp suất trao đổi khí.",
+                    "thể tích trao đổi khí."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Bộ phận trao đổi khí O₂ và CO₂ với môi trường gọi là bề mặt trao đổi khí (như phổi, mang, da)."
+            },
+            {
+                question: "Trao đổi khí của thủy tức và giun đất thuộc hình thức nào sau đây?",
+                options: [
+                    "Trao đổi khí qua mang.",
+                    "Trao đổi khí qua hệ thống ống khí",
+                    "Trao đổi khí qua bề mặt cơ thể.",
+                    "Trao đổi khí qua phổi."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Thủy tức và giun đất trao đổi khí qua bề mặt cơ thể do cơ thể nhỏ, tỉ lệ diện tích bề mặt/ thể tích lớn, khí khuếch tán trực tiếp."
+            },
+            {
+                question: "Phát biểu nào đúng khi nói về trao đổi khí qua hệ thống ống khí?",
+                options: [
+                    "Ngành ruột khoang và giun dẹp trao đổi khí qua hệ thống ống khí.",
+                    "Hệ thống ống khí bao gồm các ống khí lớn phân thành các phế quản và phế nang.",
+                    "Ống khí lớn nhất là ống khí tận, tạo ra bề mặt trao đổi khí lớn.",
+                    "Lỗ thở có van đóng, mở điều tiết không khí ra, vào ống khí."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Ở hệ thống ống khí (côn trùng), lỗ thở có van đóng mở điều tiết không khí ra vào, ngăn mất nước."
+            },
+            {
+                question: "Thông khí ở côn trùng là",
+                options: [
+                    "nhờ khí O₂ và CO₂ khuếch tán qua toàn bộ bề mặt cơ thể.",
+                    "nhờ hoạt động của các cơ hô hấp làm thay đổi thể tích khoang miệng và khoang mang.",
+                    "nhờ hoạt động của các cơ hô hấp làm thay đổi thể tích khoang thân, phối hợp với đóng, mở các van lỗ thở.",
+                    "nhờ hoạt động của các cơ hô hấp làm thay đổi thể tích các van lỗ thở, phối hợp với đóng, mở thành bụng."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Thông khí ở côn trùng nhờ hoạt động cơ làm thay đổi thể tích khoang thân, phối hợp đóng mở van lỗ thở, tạo dòng khí một chiều."
+            },
+            {
+                question: "Phát biểu nào sai khi nói về trao đổi khí qua mang?",
+                options: [
+                    "Cá xương là động vật trao đổi khí qua mang.",
+                    "Mang cá được cấu tạo từ các cung mang, sợi mang và phiến mang.",
+                    "Mỗi mang gồm có 2 cung mang, mỗi cung mang có 4 sợi mang, mỗi sợi mang có nhiều phiến mang.",
+                    "Hệ thống mao mạch trên phiến mang là nơi trao đổi khí O₂ và CO₂ với dòng nước chảy qua phiến mang."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Mô tả này không chính xác cho tất cả cá. Cấu tạo mang khác nhau tùy loài cá, số lượng sợi mang không cố định là 4."
+            },
+            {
+                question: "Nhờ hoạt động của các cơ hô hấp làm thay đổi thể tích khoang miệng và khoang mang, làm cho",
+                options: [
+                    "dòng nước giàu O₂ đi qua mang theo hai chiều song song, không bị ngắt quãng.",
+                    "dòng nước giàu O₂ đi qua mang theo một chiều liên tục, không bị ngắt quãng.",
+                    "dòng nước giàu CO₂ đi qua mang theo hai chiều song song, không bị ngắt quãng.",
+                    "dòng nước giàu CO₂ đi qua mang theo một chiều liên tục, không bị ngắt quãng."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Ở cá, hoạt động cơ hô hấp tạo dòng nước giàu O₂ đi qua mang theo một chiều liên tục, tăng hiệu quả trao đổi khí."
+            },
+            {
+                question: "Vì sao lưỡng cư có thể sống được cả ở môi trường nước và môi trường cạn?",
+                options: [
+                    "Vì nguồn thức ăn ở hai môi trường đều phong phú và đa dạng.",
+                    "Vì chân của chúng có màng, vừa bơi được dưới nước và vừa nhảy được ở trên cạn.",
+                    "Vì da của chúng ẩm ướt khi ở dưới nước và khô ráo khi ở trên cạn.",
+                    "Vì lưỡng cư có khả năng hô hấp bằng da và phổi."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Lưỡng cư có thể hô hấp bằng da (dưới nước) và phổi (trên cạn) nên thích nghi sống được cả hai môi trường."
+            },
+            {
+                question: "Phổi ở người có diện tích bề mặt trao đổi khí rất lớn là do",
+                options: [
+                    "phổi được cấu tạo từ hàng triệu phế nang.",
+                    "phổi được cấu tạo từ hàng triệu khí quản.",
+                    "phổi có các van đóng, mở phối hợp nhịp nhàng.",
+                    "phổi có hệ thống túi khí nhiều và phân nhánh."
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Phổi có diện tích trao đổi khí lớn nhờ được cấu tạo từ hàng triệu phế nang (khoảng 300-500 triệu), mỗi phế nang có mạng lưới mao mạch dày đặc."
+            },
+            {
+                question: "Hoạt động của những loại cơ nào dưới đây gây ra cử động hít vào thở ra bình thường của người?",
+                options: [
+                    "Cơ liên sườn và cơ hoành.",
+                    "Cơ bụng và cơ vai.",
+                    "Cơ vai và cơ hoành.",
+                    "Cơ liên sườn và cơ lưng."
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Cử động hít vào thở ra bình thường (hô hấp êm dịu) do cơ liên sườn ngoài và cơ hoành hoạt động."
+            },
+            {
+                question: "Ở chim, khi hít vào không khí giàu",
+                options: [
+                    "CO₂ đi vào phổi và vào nhóm túi khí sau.",
+                    "CO₂ đi vào phổi và vào nhóm túi khí trước.",
+                    "O₂ đi vào phổi và vào nhóm túi khí sau",
+                    "O₂ đi vào phổi và vào nhóm túi khí trước."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Ở chim, khi hít vào không khí giàu O₂ đi vào phổi và vào nhóm túi khí sau; không khí nghèo O₂ từ phổi đi ra túi khí trước."
+            },
+            {
+                question: "Rèn luyện thể dục, thể thao có lợi ích gì đối với hệ hô hấp?",
+                options: [
+                    "Giúp cơ hô hấp phát triển to hơn, săn chắc hơn, có khỏe hơn.",
+                    "Giúp tăng nhịp thở, lấy được nhiều khí oxygen hơn.",
+                    "Giúp giảm thể tích khi hít vào hoặc thở ra, giảm áp lực lên phổi.",
+                    "Giúp phòng chống mọi bệnh tật gây ra với hệ hô hấp."
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Rèn luyện thể dục thể thao giúp cơ hô hấp (cơ liên sườn, cơ hoành) phát triển, săn chắc, khỏe hơn, tăng dung tích sống của phổi."
+            },
+            {
+                question: "Khói thuốc lá gây ra những tác động xấu cho sức khỏe người hút và người hít phải khói thuốc vì",
+                options: [
+                    "khói thuốc có chứa tác nhân gây bệnh là virus gây bệnh cho con người.",
+                    "khói thuốc có chứa tác nhân gây bệnh là nấm mốc gây bệnh cho con người.",
+                    "khói thuốc có chứa các chất hóa học độc hại như nicotine, carbon monoxide, tar.",
+                    "khói thuốc có chứa bụi mịn làm hệ hô hấp ngừng hoạt động ngay lập tức."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Khói thuốc lá chứa nhiều chất hóa học độc hại: nicotine (gây nghiện, co mạch), CO (chiếm chỗ O₂), tar (nhựa thuốc lá gây ung thư) gây hại cho sức khỏe."
+            },
+            {
+                question: "Khi nuôi tôm, cá với mật độ cao người ta thường dùng máy sục khí vào nước nuôi nhằm",
+                options: [
+                    "loại bỏ các tạp chất và vi sinh vật trong nước, giúp tôm, cá khỏe mạnh hơn.",
+                    "giúp cho nước trong hơn để tôm, cá có thể nhìn thấy nguồn thức ăn.",
+                    "đảm bảo cung cấp đủ lượng carbon dioxide giúp cho tôm, cá hô hấp.",
+                    "đảm bảo cung cấp đủ lượng oxygen trong nước giúp cho tôm, cá hô hấp."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Máy sục khí cung cấp đủ oxygen hòa tan trong nước cho tôm, cá hô hấp khi nuôi mật độ cao (nhu cầu O₂ cao, dễ thiếu O₂)."
+            },
+            {
+                question: "Vì sao phổi của chim bồ câu có kích thước rất nhỏ so với phổi của chuột nhưng hiệu quả trao đổi khí của chim bồ câu lại cao hơn so với chuột?",
+                options: [
+                    "Vì chim có đời sống bay lượn nên lấy được các khí ở trên cao sạch và có nhiều oxi hơn.",
+                    "Vì chim có đời sống bay lượn nên cử động cánh chim giúp phổi chim co giãn tốt hơn.",
+                    "Vì phổi chim có hệ thống ống khí trao đổi khí nên chứa được nhiều khí hơn, còn phổi của chuột không có hệ thống ống khí nên chứa được ít khí.",
+                    "Vì hệ thống hô hấp của chim gồm phổi và hệ thống túi khí, hô hấp kép và không có khí cặn."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Hiệu quả trao đổi khí của chim cao do hệ thống hô hấp đặc biệt: phổi + túi khí, thực hiện hô hấp kép (trao đổi khí cả khi hít vào và thở ra), không có khí cặn."
+            },
+            {
+                question: "Hệ tuần hoàn của động vật được cấu tạo từ các bộ phận nào sau đây?",
+                options: [
+                    "Dịch tuần hoàn, tim và hệ thống mạch máu",
+                    "Dịch tuần hoàn, tim và máu.",
+                    "Máu, nước mô và tim.",
+                    "Máu, tim và hệ thống bạch huyết."
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Hệ tuần hoàn gồm: dịch tuần hoàn (máu, bạch huyết), tim (bơm) và hệ thống mạch máu (động mạch, mao mạch, tĩnh mạch)."
+            },
+            {
+                question: "Hệ tuần hoàn hở không có đặc điểm nào dưới đây?",
+                options: [
+                    "Tim bơm máu vào động mạch với áp lực thấp.",
+                    "Máu chảy vào xoang cơ thể trộn lẫn với dịch mô tạo thành hỗn hợp máu - dịch mô.",
+                    "Máu chảy trong động mạch với áp lực thấp nên tốc độ máu chảy nhanh.",
+                    "Máu trao đổi chất trực tiếp với tế bào cơ thể, sau đó trở về tim theo các ống góp."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Trong hệ tuần hoàn hở, máu chảy với áp lực thấp nên tốc độ chảy chậm, không phải nhanh."
+            },
+            {
+                question: "Ở hệ tuần hoàn kín, tim bơm máu vào động mạch với áp lực",
+                options: [
+                    "mạnh, máu chảy liên tục trong mạch kín, từ động mạch qua tĩnh mạch, mao mạch và về tim.",
+                    "mạnh, máu chảy liên tục trong mạch kín, từ động mạch qua mao mạch, tĩnh mạch và về tim.",
+                    "yếu, máu chảy liên tục trong mạch kín, từ động mạch qua mao mạch, tĩnh mạch và về tim.",
+                    "yếu, máu chảy liên tục trong mạch kín, từ mao mạch qua động mạch, tĩnh mạch và về tim."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Ở hệ tuần hoàn kín, tim bơm máu mạnh, máu chảy liên tục trong mạch kín theo chiều: động mạch → mao mạch → tĩnh mạch → tim."
+            },
+            {
+                question: "Hệ tuần hoàn kép có ở những động vật nào dưới đây?",
+                options: [
+                    "Chim sẻ, ong, châu chấu.",
+                    "Con trai, ốc sên, ếch.",
+                    "Cá chép, cá mập, ếch.",
+                    "Chim bồ câu, con mèo, con thỏ."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Hệ tuần hoàn kép (2 vòng tuần hoàn: nhỏ và lớn) có ở chim và thú (chim bồ câu, mèo, thỏ) do tim có 4 ngăn hoàn chỉnh."
+            },
+            {
+                question: "Điểm khác nhau giữa hệ tuần hoàn ở người và hệ tuần hoàn ở cá là",
+                options: [
+                    "ở cá, máu được oxy hóa khi qua mao mạch mang.",
+                    "người có 2 vòng tuần hoàn còn cá chỉ có một vòng tuần hoàn.",
+                    "các ngăn tim ở người gọi là các tâm nhĩ và tâm thất.",
+                    "người có hệ tuần hoàn kín, cá có hệ tuần hoàn hở."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Người có 2 vòng tuần hoàn (vòng lớn đi khắp cơ thể, vòng nhỏ qua phổi), cá chỉ có 1 vòng tuần hoàn (từ tim → mang → cơ thể → tim)."
+            },
+            {
+                question: "Phát biểu nào sai khi nói về cấu tạo của tim?",
+                options: [
+                    "Tâm nhĩ là buồng bơm máu ra khỏi tim.",
+                    "Buồng tim nối thông với động mạch hoặc tĩnh mạch.",
+                    "Giữa tâm nhĩ và tâm thất, giữa tâm thất và động mạch có các van tim.",
+                    "Thành các buồng tim được cấu tạo bởi các tế bào cơ tim"
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Tâm thất mới là buồng bơm máu ra khỏi tim (vào động mạch), tâm nhĩ chỉ nhận máu từ tĩnh mạch về và bơm xuống tâm thất."
+            },
+            {
+                question: "Hệ dẫn truyền tim hoạt động theo trật tự là",
+                options: [
+                    "nút xoang nhĩ → hai tâm nhĩ và nút nhĩ thất → bó His → mạng lưới Purkinje → các tâm nhĩ, tâm thất co.",
+                    "nút nhĩ thất → hai tâm nhĩ và nút xoang nhĩ → bó His → mạng lưới Purkinje → các tâm nhĩ, tâm thất co.",
+                    "nút xoang nhĩ → hai tâm nhĩ và nút nhĩ thất → mạng lưới Purkinje → bó His → các tâm nhĩ, tâm thất co",
+                    "nút xoang nhĩ → hai tâm nhĩ → nút nhĩ thất → bó His → mạng lưới Purkinje → các tâm nhĩ, tâm thất co"
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Trật tự hoạt động hệ dẫn truyền tim: nút xoang nhĩ (tạo xung) → lan ra tâm nhĩ (co) → nút nhĩ thất → bó His → mạng Purkinje → tâm thất co."
+            },
+            {
+                question: "Ở người trưởng thành, mỗi chu kì tim kéo dài khoảng 0,8 s, trong đó",
+                options: [
+                    "tâm nhĩ co 0,3 s; tâm thất co 0,1 s; thời gian dãn chung là 0,4 s.",
+                    "tâm nhĩ co 0,1 s; tâm thất co 0,3 s; thời gian dãn chung là 0,4 s.",
+                    "tâm nhĩ co 0,1 s; tâm thất co 0,4 s; thời gian dãn chung là 0,3 s.",
+                    "tâm nhĩ co 0,4 s; tâm thất co 0,1 s; thời gian dãn chung là 0,1 s."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Chu kỳ tim 0,8s: tâm nhĩ co 0,1s, tâm thất co 0,3s, thời gian dãn chung (cả tim nghỉ) 0,4s."
+            },
+            {
+                question: "Phát biểu nào sau đây đúng khi nói về huyết áp?",
+                options: [
+                    "Huyết áp là tốc độ máu chảy trong một giây.",
+                    "Huyết áp tâm thu còn gọi là huyết áp tối đa, ứng với tâm thất dãn.",
+                    "Huyết áp cao nhất ở động mạch lớn, giảm dần ở các động mạch nhỏ.",
+                    "Tim co bóp đẩy máu vào tĩnh mạch tạo ra huyết áp."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Huyết áp cao nhất ở động mạch chủ (động mạch lớn), giảm dần ở động mạch nhỏ, mao mạch và thấp nhất ở tĩnh mạch."
+            },
+            {
+                question: "Phát biểu nào đúng khi nói về đặc điểm của mao mạch phù hợp với chức năng trao đổi chất với tế bào?",
+                options: [
+                    "Số lượng mao mạch ít, giúp quá trình trao đổi chất diễn ra nhanh hơn.",
+                    "Số lượng mao mạch rất lớn, tạo ra diện tích trao đổi chất giữa máu và tế bào lớn.",
+                    "Thành mao mạch cấu tạo từ các lớp mô liên kết, lớp tế bào biểu mô dẹt và có các lỗ nhỏ cho phép các chất đi qua.",
+                    "Vận tốc máu chảy nhanh, giúp quá trình trao đổi chất diễn ra nhanh hơn."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Số lượng mao mạch rất lớn, phân nhánh dày đặc tạo diện tích trao đổi chất lớn giữa máu và tế bào."
+            },
+            {
+                question: "Hoạt động tim mạch được điều hòa bằng cơ chế",
+                options: [
+                    "hô hấp và tuần hoàn, qua đó điều hòa tuần hoàn máu.",
+                    "hô hấp và thể dịch, qua đó điều hòa tuần hoàn máu.",
+                    "thần kinh và thể dịch, qua đó điều hòa tuần hoàn máu.",
+                    "thần kinh và tim mạch, qua đó điều hòa tuần hoàn máu."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Hoạt động tim mạch được điều hòa bằng cơ chế thần kinh (trung ương thần kinh, thần kinh tự động) và thể dịch (hormone như adrenaline, aldosterone)."
+            },
+            {
+                question: "Luyện tập thể dục, thể thao thường xuyên có lợi ích gì đối với hệ tuần hoàn?",
+                options: [
+                    "Cơ tim phát triển, thành tim dày, buồng tim dãn rộng hơn và co mạnh hơn, dẫn đến tăng thể tích tâm thu.",
+                    "Nhịp tim khi nghỉ ngơi giảm do thể tích tâm thu tăng.",
+                    "Mạch máu bền hơn và tăng khả năng đàn hồi, nhờ đó tăng lưu lượng máu khi lao động.",
+                    "Tất cả các đáp án trên."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Tất cả các lợi ích trên đều đúng: tim khỏe hơn (cơ tim phát triển), nhịp tim nghỉ giảm (hiệu quả hơn), mạch máu bền và đàn hồi tốt hơn."
+            },
+            {
+                question: "Bệnh nhân bị hở van nhĩ thất sẽ dễ bị suy tim, nguyên nhân chính là do",
+                options: [
+                    "khi tâm thất co sẽ đẩy một phần máu chảy ngược lên tâm nhĩ, làm cho lượng máu chảy vào động mạch vành giảm nên lượng máu nuôi tim giảm.",
+                    "khi bị hở van tim thì sẽ dẫn tới làm tăng nhịp tim rút ngắn thời nghỉ của tim.",
+                    "khi tâm thất co sẽ đẩy một phần máu chảy ngược lên tâm nhĩ làm cho lượng máu cung cấp trực tiếp cho thành tâm thất giảm, nên tâm thất bị thiếu dinh dưỡng và oxygen.",
+                    "khi tâm thất co sẽ đẩy một phần máu chảy ngược lên tâm nhĩ ngăn cản tâm nhĩ nhận máu từ tĩnh mạch về phổi làm cho tim thiếu oxygen để hoạt động."
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Hở van nhĩ thất làm máu chảy ngược từ tâm thất lên tâm nhĩ khi tâm thất co, giảm lượng máu vào động mạch vành (nuôi cơ tim) gây suy tim."
+            },
+            {
+                question: "Một người sống ở vùng núi cao và một người sống ở đồng bằng cùng thi đấu chạy. Phát biểu nào sau đây đúng khi nói về hoạt động tim, phổi của hai người này khi đang thi đấu?",
+                options: [
+                    "Hoạt động tim, phổi của hai người này đều tăng mạnh.",
+                    "Hoạt động tim, phổi của hai người này đều giảm mạnh.",
+                    "Người sống ở vùng đồng bằng có nhịp tim và tần số hô hấp thấp hơn người sống ở vùng núi cao.",
+                    "Người sống ở vùng núi cao có nhịp tim và tần số hô hấp thấp hơn người sống ở vùng đồng bằng."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Người sống ở núi cao đã thích nghi với không khí loãng (tăng số lượng hồng cầu, tăng dung tích phổi) nên khi thi đấu, người đồng bằng phải tăng nhịp tim và nhịp thở nhiều hơn để đáp ứng nhu cầu oxygen."
+            },
+            {
+                question: "Vì sao ở người già, khi huyết áp cao dễ bị xuất huyết não?",
+                options: [
+                    "Vì mạch bị xơ cứng, máu bị ứ đọng, đặc biệt các mạch ở não, khi huyết áp cao dễ làm vỡ mạch.",
+                    "Vì mạch bị xơ cứng nên không co bóp được, đặc biệt là các mạch ở não, khi huyết áp cao dễ làm vỡ mạch.",
+                    "Vì mạch bị xơ cứng, tính đàn hồi kém, đặc biệt các mạch ở não, khi huyết áp cao dễ làm vỡ mạch.",
+                    "Vì thành mạch dày lên, tính đàn hồi kém, đặc biệt là các mạch ở não, khi huyết áp cao dễ làm vỡ mạch."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Ở người già, mạch máu xơ cứng, đàn hồi kém, đặc biệt mạch não nhỏ và dễ vỡ, khi huyết áp cao dễ vỡ gây xuất huyết não."
+            },
+            {
+                question: "Nguyên nhân gây bệnh cho người và động vật là do",
+                options: [
+                    "các tác nhân vật lí và hóa học.",
+                    "các tác nhân sinh học.",
+                    "yếu tố di truyền.",
+                    "Tất cả các nguyên nhân trên"
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Nguyên nhân gây bệnh bao gồm: tác nhân vật lý (nhiệt độ, bức xạ), hóa học (chất độc), sinh học (vi khuẩn, virus, ký sinh trùng) và yếu tố di truyền."
+            },
+            {
+                question: "Phát biểu nào sai khi nói về các tác nhân vật lý và cách thức gây bệnh của chúng?",
+                options: [
+                    "Nhiệt độ cao gây biến tính protein, gây bỏng.",
+                    "Ánh sáng mặt trời mạnh gây tổn thương DNA, có thể gây ung thư da.",
+                    "Âm thanh lớn kéo dài gây giập nát, phá hủy, tổn thương mô và cơ quan.",
+                    "Dòng điện gây giật, bỏng tại chỗ hoặc toàn thân."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Âm thanh lớn kéo dài gây tổn thương thính giác (phá hủy tế bào lông ở ốc tai), ù tai, điếc, không gây giập nát, phá hủy mô và cơ quan trực tiếp như chấn thương cơ học."
+            },
+            {
+                question: "Ở người và động vật, chức năng bảo vệ cơ thể chống lại các tác nhân gây bệnh do",
+                options: [
+                    "hệ vận động đảm nhận.",
+                    "hệ miễn dịch đảm nhận.",
+                    "hệ sinh dục đảm nhận.",
+                    "hệ bài tiết đảm nhận."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Hệ miễn dịch có chức năng bảo vệ cơ thể chống lại tác nhân gây bệnh (mầm bệnh) và các tế bào bất thường."
+            },
+            {
+                question: "Nếu mầm bệnh qua không khí và giọt bắn xâm nhập vào hệ hô hấp, hàng rào bảo vệ đầu tiên của hệ miễn dịch tiêu diệt mầm bệnh như thế nào?",
+                options: [
+                    "Hệ hô hấp tiết ra enzyme lysosome tiêu diệt mầm bệnh.",
+                    "Lớp dịch nhầy trong khí quản, phế quản giữ bụi và mầm bệnh, sau đó các lông nhỏ đẩy dịch nhầy lên hầu, vào thực quản và dạ dày.",
+                    "pH trong khí quản và phế quản thấp, ức chế mầm bệnh phát triển.",
+                    "Lớp sừng và lớp biểu bì chết trong khoang mũi ép chặt với nhau ngăn chặn mầm bệnh xâm nhập."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Hàng rào đầu tiên (miễn dịch không đặc hiệu) ở đường hô hấp: dịch nhầy giữ mầm bệnh, lông chuyển đẩy lên hầu rồi vào dạ dày bị acid và enzyme tiêu hóa tiêu diệt."
+            },
+            {
+                question: "Đâu không phải là các đáp ứng của miễn dịch không đặc hiệu?",
+                options: [
+                    "Thực bào.",
+                    "Sốt.",
+                    "Viêm.",
+                    "Hình thành kháng thể."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Hình thành kháng thể là đáp ứng của miễn dịch đặc hiệu (dịch thể), không phải miễn dịch không đặc hiệu."
+            },
+            {
+                question: "Phát biểu nào sai khi nói về tác dụng sốt bảo vệ cơ thể?",
+                options: [
+                    "Giúp các tế bào T độc lưu hành trong máu và tiết ra chất độc tiêu diệt mầm bệnh.",
+                    "Làm gan tăng nhận sắt từ máu, đây là chất cần cho sinh sản của vi khuẩn.",
+                    "Làm tăng hoạt động thực bào của bạch cầu.",
+                    "Ức chế vi khuẩn, virus tăng sinh."
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Sốt là phản ứng miễn dịch không đặc hiệu, không trực tiếp giúp tế bào T độc lưu hành và tiết chất độc; đó là chức năng của miễn dịch tế bào đặc hiệu."
+            },
+            {
+                question: "Miễn dịch đặc hiệu thực chất là",
+                options: [
+                    "phản ứng viêm khi một vùng nào đó của cơ thể bị thương.",
+                    "phản ứng giữa tế bào miễn dịch, kháng thể với kháng nguyên.",
+                    "phản ứng giữa bạch cầu với kháng nguyên.",
+                    "phản ứng sinh ra các protein ức chế sự sinh sản của mầm bệnh."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Miễn dịch đặc hiệu là phản ứng đặc hiệu giữa tế bào miễn dịch (lymphocyte T, B), kháng thể với kháng nguyên cụ thể của mầm bệnh."
+            },
+            {
+                question: "Đâu không phải là điểm khác nhau giữa miễn dịch không đặc hiệu và miễn dịch đặc hiệu?",
+                options: [
+                    "Miễn dịch đặc hiệu có ở động vật không xương sống, còn miễn dịch không đặc hiệu có ở tất cả động vật.",
+                    "Miễn dịch đặc hiệu đáp ứng chậm, còn miễn dịch không đặc hiệu đáp ứng tức thời.",
+                    "Miễn dịch đặc hiệu bảo vệ cơ thể khỏi các mầm bệnh như virus, vi khuẩn, còn miễn dịch không đặc hiệu không có khả năng trên.",
+                    "Miễn dịch đặc hiệu hình thành trong đời sống của từng cá thể, còn miễn dịch không đặc hiệu có ngay từ khi sinh ra."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Cả miễn dịch đặc hiệu và không đặc hiệu đều bảo vệ cơ thể khỏi mầm bệnh. Miễn dịch không đặc hiệu là tuyến phòng thủ đầu tiên chống lại mọi mầm bệnh."
+            },
+            {
+                question: "Tế bào T độc được hoạt hóa nhờ",
+                options: [
+                    "tế bào T hỗ trợ tiết cytokine và nhờ sự tương tác với tế bào B.",
+                    "tế bào T hỗ trợ tiết cytokine và nhờ sự tương tác với tế bào trình diện kháng nguyên.",
+                    "tế bào T hỗ trợ tiết cytokine và nhờ sự tương tác với tương bào.",
+                    "tế bào B tiết cytokine và nhờ sự tương tác với tế bào trình diện kháng nguyên."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Tế bào T độc được hoạt hóa nhờ tế bào T hỗ trợ tiết cytokine và tương tác trực tiếp với tế bào trình diện kháng nguyên (APC) có trình diện kháng nguyên phù hợp."
+            },
+            {
+                question: "Nhờ tế bào nhớ tạo ra ở đáp ứng miễn dịch nguyên phát nên đáp ứng miễn dịch thứ phát diễn ra",
+                options: [
+                    "nhanh hơn, số lượng tế bào miễn dịch và kháng thể nhiều hơn, khả năng chống lại mầm bệnh hiệu quả.",
+                    "nhanh hơn, số lượng kháng nguyên nhiều hơn, khả năng chống lại mầm bệnh hiệu quả.",
+                    "nhanh hơn, số lượng tế bào miễn dịch và kháng thể ít hơn, khả năng chống lại mầm bệnh hiệu quả.",
+                    "chậm hơn, số lượng tế bào miễn dịch và kháng thể nhiều hơn, khả năng chống lại mầm bệnh hiệu quả."
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Đáp ứng miễn dịch thứ phát nhờ tế bào nhớ từ lần tiếp xúc trước nên diễn ra nhanh hơn, mạnh hơn (nhiều tế bào miễn dịch và kháng thể hơn), hiệu quả bả vệ cao hơn."
+            },
+            {
+                question: "Phát biểu nào sai khi nói về phản ứng dị ứng?",
+                options: [
+                    "Dị ứng là phản ứng quá mức của cơ thể đối với kháng nguyên nhất định.",
+                    "Chất gây ra triệu chứng dị ứng chủ yếu là histamine.",
+                    "Tất cả các phản ứng dị ứng đều là sốc phản vệ.",
+                    "Các triệu chứng phổ biến khi bị dị ứng là mẩn ngứa, hắt hơi, sổ mũi, khó thở,..."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Không phải tất cả phản ứng dị ứng đều là sốc phản vệ; sốc phản vệ là phản ứng dị ứng nghiêm trọng nhất, đe dọa tính mạng. Có nhiều mức độ dị ứng từ nhẹ đến nặng."
+            },
+            {
+                question: "Di căn là quá trình tế bào u ác tính có thể",
+                options: [
+                    "tách ra khỏi khối u theo hệ thần kinh đến các vị trí khác trong cơ thể và hình thành khối u lành tính mới.",
+                    "tách ra khỏi khối u theo đường máu hoặc bạch huyết đến các vị trí khác trong cơ thể và hình thành khối u ác tính mới.",
+                    "tách ra khỏi khối u và tiêu diệt các mầm bệnh khác của cơ thể.",
+                    "di chuyển đến vị trí khác của cơ thể và làm tăng khả năng miễn dịch của cơ quan tại vị trí mà chúng di chuyển tới."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Di căn là đặc điểm của ung thư ác tính: tế bào ung thư tách khỏi khối u ban đầu, theo máu hoặc bạch huyết đến nơi khác trong cơ thể, phát triển thành khối u ác tính mới (di căn)."
+            },
+            {
+                question: "Người bị nhiễm HIV/AIDS thường dễ mắc bệnh lao vì",
+                options: [
+                    "cơ thể những người này suy giảm khả năng sản xuất kháng nguyên chống lại vi khuẩn lao.",
+                    "các tế bào thực bào ở những người này giảm khả năng bắt giữ vi khuẩn lao.",
+                    "tế bào bạch cầu bị tiêu diệt, làm suy yếu dần khả năng đáp ứng miễn dịch không đặc hiệu, làm khả năng chống mầm bệnh suy giảm.",
+                    "tế bào T hỗ trợ (CD4+) bị tiêu diệt, làm suy yếu dần khả năng đáp ứng miễn dịch dịch thể và đáp ứng miễn dịch tế bào, làm khả năng chống mầm bệnh suy giảm."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. HIV tiêu diệt tế bào T hỗ trợ (CD4+) là trung tâm điều hòa cả miễn dịch dịch thể (tế bào B, kháng thể) và miễn dịch tế bào (tế bào T độc), nên dễ mắc bệnh cơ hội như lao."
+            },
+            {
+                question: "Vì sao cần sản xuất vaccine cúm mới và tiêm nhắc lại vaccine cúm hằng năm?",
+                options: [
+                    "Vì kháng thể của virus cúm luôn biến đổi làm cho tế bào T độc hoạt hóa và tiết ra chất độc tiêu diệt tế bào bình thường của cơ thể.",
+                    "Vì kháng nguyên của virus cúm luôn biến đổi làm cho các dòng tế bào nhớ bị đột biến mất chức năng.",
+                    "Vì kháng thể của virus cúm luôn biến đổi làm cho các dòng tế bào nhớ không thể nhận ra các chủng virus cúm mới.",
+                    "Vì kháng nguyên của virus cúm luôn biến đổi (đột biến) làm cho các dòng tế bào nhớ không thể nhận ra các chủng virus cúm mới."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Virus cúm biến đổi kháng nguyên nhanh (drift, shift) tạo các chủng mới, khiến tế bào nhớ và kháng thể từ vaccine cũ không nhận ra chủng mới, cần vaccine cập nhật hàng năm."
+            },
+            {
+                question: "Tiêm vaccine có thể giúp phòng một số bệnh do virus và vi khuẩn gây ra ở người và vật nuôi vì",
+                options: [
+                    "vaccine giúp chủ động tạo ra đáp ứng miễn dịch nguyên phát, sau đó nếu lại tiếp xúc với kháng nguyên đó sẽ tạo ra đáp ứng miễn dịch thứ phát nhờ tế bào nhớ.",
+                    "vaccine giúp chủ động tạo ra đáp ứng miễn dịch thứ phát, sau đó nếu lại tiếp xúc với kháng nguyên đó sẽ tạo ra đáp ứng miễn dịch nguyên phát nhờ tế bào nhớ.",
+                    "vaccine giúp chủ động tạo ra đáp ứng miễn dịch dịch thể, sau đó nếu lại tiếp xúc với kháng nguyên đó sẽ tạo ra đáp ứng miễn dịch tế bào.",
+                    "vaccine giúp chủ động tạo ra đáp ứng miễn dịch tế bào, sau đó nếu lại tiếp xúc với kháng nguyên đó sẽ tạo ra đáp ứng miễn dịch dịch thể."
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Vaccine chứa kháng nguyên đã làm yếu/chết hoặc một phần mầm bệnh, kích thích cơ thể tạo đáp ứng miễn dịch nguyên phát, tạo tế bào nhớ; khi gặp mầm bệnh thật sẽ kích hoạt đáp ứng thứ phát nhanh và mạnh hơn, ngăn ngừa bệnh."
+            },
+            {
+                question: "Nếu các chất độc hại, chất dư thừa tích tụ lại trong cơ thể sẽ",
+                options: [
+                    "gây mất cân bằng nội môi.",
+                    "gây tổn thương tế bào, cơ quan.",
+                    "dẫn đến mắc các bệnh lí.",
+                    "Tất cả các đáp án trên."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Chất độc tích tụ gây mất cân bằng nội môi (rối loạn chức năng), tổn thương tế bào, cơ quan và dẫn đến bệnh lí (nhiễm độc, suy tạng)."
+            },
+            {
+                question: "Mỗi nephron được cấu tạo từ",
+                options: [
+                    "cầu thận và ống thận.",
+                    "phần vỏ và phần tủy.",
+                    "quản cầu và nang Bowman.",
+                    "cầu thận và bể thận."
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Mỗi nephron (đơn vị chức năng của thận) gồm: cầu thận (quản cầu mao mạch + nang Bowman) và ống thận (ống lượn gần, quai Henle, ống lượn xa, ống góp)."
+            },
+            {
+                question: "Đặc điểm nào dưới đây tương ứng với giai đoạn lọc trong quá trình hình thành nước tiểu ở nephron?",
+                options: [
+                    "Nước, các chất dinh dưỡng, các ion cần thiết trong dịch lọc được các tế bào ống thận hấp thụ trả về máu.",
+                    "Huyết áp đẩy nước và các chất hòa tan từ máu qua lỗ lọc vào trong nang Bowman, tạo ra dịch lọc cầu thận.",
+                    "Chất độc, một số ion dư thừa được các tế bào thành ống thận tiết vào dịch lọc.",
+                    "Nước tiểu được ống góp hấp thụ bớt nước và chảy vào bể thận."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Giai đoạn lọc (ở cầu thận): huyết áp đẩy nước và chất hòa tan có kích thước nhỏ từ máu qua màng lọc (lỗ lọc) vào nang Bowman tạo dịch lọc (nước tiểu đầu)."
+            },
+            {
+                question: "Trung bình mỗi ngày có bao nhiêu lít nước tiểu đầu được tạo thành?",
+                options: [
+                    "1700-1800 L.",
+                    "170-180 L.",
+                    "15-20 L.",
+                    "1,5-2 L."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Mỗi ngày có khoảng 170-180 lít nước tiểu đầu được lọc qua cầu thận. Hầu hết được tái hấp thu, chỉ khoảng 1,5-2 lít nước tiểu thật được bài xuất."
+            },
+            {
+                question: "Mỗi hệ thống điều hòa cân bằng nội môi gồm các thành phần là",
+                options: [
+                    "bộ phận tiếp nhận kích thích và bộ phận đáp ứng kích thích.",
+                    "bộ phận tiếp nhận kích thích và bộ phận thực hiện.",
+                    "bộ phận tiếp nhận kích thích, bộ phận điều khiển và bộ phận thực hiện.",
+                    "bộ phận điều khiển, bộ phận thực hiện và hệ thần kinh."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Hệ thống điều hòa cân bằng nội môi gồm: bộ phận tiếp nhận kích thích (thụ thể), bộ phận điều khiển (trung ương thần kinh, tuyến nội tiết) và bộ phận thực hiện (cơ quan đáp ứng)."
+            },
+            {
+                question: "Phát biểu nào sai khi nói về hệ thống điều hòa cân bằng nội môi?",
+                options: [
+                    "Bộ phận tiếp nhận tiếp nhận kích thích từ môi trường trong hoặc ngoài cơ thể.",
+                    "Bộ phận tiếp nhận kích thích chuyển tín hiệu gây ra đáp ứng ở bộ phận thực hiện.",
+                    "Bộ phận điều khiển chuyển tín hiệu thần kinh hoặc hormone đến bộ phận thực hiện tạo kết quả đáp ứng.",
+                    "Khi một bộ phận của hệ thống điều hòa cân bằng nội môi hoạt động không bình thường sẽ dẫn đến mất cân bằng nội môi."
+                ],
+                correctAnswer: 1,
+                explanation: "Đáp án đúng là B. Bộ phận tiếp nhận chuyển tín hiệu đến bộ phận điều khiển, không trực tiếp đến bộ phận thực hiện. Bộ phận điều khiển mới ra lệnh cho bộ phận thực hiện."
+            },
+            {
+                question: "Vai trò của gan trong điều hòa cân bằng nội môi là",
+                options: [
+                    "điều hòa nồng độ của nhiều chất hòa tan như protein, glucose,... trong huyết tương.",
+                    "điều hòa cân bằng muối và nước, qua đó duy trì áp suất thẩm thấu của dịch cơ thể.",
+                    "duy trì pH máu qua điều chỉnh tiết H⁺ vào dịch lọc và tái hấp thụ HCO₃⁻ từ dịch lọc trả về máu.",
+                    "duy trì pH máu qua điều chỉnh lượng O₂ và CO₂ trong máu."
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Gan điều hòa nồng độ nhiều chất trong máu: dự trữ glucose dưới dạng glycogen, tổng hợp protein huyết tương, chuyển hóa lipid, giải độc,... góp phần cân bằng nội môi."
+            },
+            {
+                question: "Bộ phận nào có vai trò dẫn nước tiểu từ bể thận xuống bàng quang?",
+                options: [
+                    "Niệu quản.",
+                    "Niệu đạo",
+                    "Ống góp.",
+                    "Quản cầu"
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Niệu quản (2 ống) dẫn nước tiểu từ bể thận xuống bàng quang."
+            },
+            {
+                question: "Chức năng của thận là",
+                options: [
+                    "lọc máu, tái hấp thụ các chất dinh dưỡng.",
+                    "điều tiết lượng nước và muối hấp thụ.",
+                    "loại bỏ các chất độc hại và chất dư thừa ra khỏi cơ thể.",
+                    "Tất cả các chức năng trên."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Thận có chức năng: lọc máu, tái hấp thu chất dinh dưỡng, nước, ion cần thiết; điều hòa nước và điện giải; bài tiết chất độc, chất cặn bã, dư thừa; điều hòa pH, huyết áp."
+            },
+            {
+                question: "Bộ phận thực hiện trong cơ chế điều hòa cân bằng nội môi là",
+                options: [
+                    "thụ thể hoặc cơ quan thụ cảm.",
+                    "trung ương thần kinh.",
+                    "tuyến nội tiết.",
+                    "các cơ quan thận, gan, phổi, tim, mạch máu…"
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Bộ phận thực hiện là các cơ quan thực hiện đáp ứng điều chỉnh như thận (bài tiết), gan (chuyển hóa), phổi (thải CO₂), tim mạch (vận chuyển)."
+            },
+            {
+                question: "Khi hàm lượng glucose trong máu tăng, cơ chế điều hòa diễn ra theo trật tự là",
+                options: [
+                    "tuyến tụy → insulin → gan và tế bào cơ thể → glucose trong máu giảm",
+                    "gan → insulin → tuyến tụy và tế bào cơ thể → glucose trong máu giảm",
+                    "gan → tuyến tụy và tế bào cơ thể → insulin → glucose trong máu giảm",
+                    "insulin → gan và tế bào cơ thể → tuyến tụy → glucose trong máu giảm"
+                ],
+                correctAnswer: 0,
+                explanation: "Đáp án đúng là A. Khi glucose máu tăng: tế bào β đảo tụy tiết insulin → insulin tác động lên gan (tăng tổng hợp glycogen, giảm phân giải glycogen) và tế bào cơ, mỡ (tăng thu nhận glucose) → glucose máu giảm."
+            },
+            {
+                question: "Để bảo vệ thận cần thực hiện biện pháp",
+                options: [
+                    "Có chế độ ăn hợp lí, uống đủ nước.",
+                    "Không uống nhiều rượu, bia.",
+                    "Không sử dụng quá nhiều loại thuốc.",
+                    "Tất cả các biện pháp trên."
+                ],
+                correctAnswer: 3,
+                explanation: "Đáp án đúng là D. Tất cả các biện pháp trên đều cần thiết để bảo vệ thận: ăn uống lành mạnh (giảm muối, đạm), uống đủ nước, hạn chế rượu bia, thuốc không đúng cách (gây độc thận)."
+            },
+            {
+                question: "Trường hợp nào dưới đây thường có nguy cơ chạy thận nhân tạo cao nhất?",
+                options: [
+                    "Người bị tai nạn giao thông.",
+                    "Người bị sỏi bàng quang giai đoạn đầu",
+                    "Người bị suy thận nặng.",
+                    "Người hút nhiều thuốc lá."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Người bị suy thận nặng (mạn giai đoạn cuối), thận mất chức năng lọc máu (trên 85-90%) cần chạy thận nhân tạo hoặc ghép thận để duy trì sự sống."
+            },
+            {
+                question: "Một người đàn ông có nồng độ aldosterone trong máu cao dẫn tới bị bệnh cao huyết áp. Điều này ảnh hưởng đến độ pH máu như thế nào?",
+                options: [
+                    "pH máu giảm do huyết áp cao đẩy máu tới các cơ quan mạnh, trao đổi chất mạnh tạo ra nhiều CO₂.",
+                    "pH máu giảm do aldosterone làm tăng hấp thu H⁺.",
+                    "pH máu tăng do aldosterone làm giảm hấp thu K⁺.",
+                    "pH máu tăng do huyết áp cao đẩy máu tới các cơ quan hô hấp giúp thải CO₂ ra ngoài."
+                ],
+                correctAnswer: 2,
+                explanation: "Đáp án đúng là C. Aldosterone cao làm tăng tái hấp thu Na⁺ và nước (gây cao huyết áp), đồng thời tăng bài tiết K⁺ và H⁺. Tuy nhiên, khi bài tiết K⁺ ưu tiên, bài tiết H⁺ có thể giảm tương đối, dẫn đến H⁺ tích tụ ít hơn hoặc HCO₃⁻ tăng, gây nhiễm kiềm (pH tăng)."
+            }
+        ];
+
+        // Biến toàn cục
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let score = 0;
+        let timeLeft = 120 * 60; // 120 phút tính bằng giây
+        let timerInterval;
+        let shuffledQuestions = [];
+        let shuffledIndices = [];
+
+        // Hàm điều chỉnh giải thích sau khi xáo trộn đáp án
+        function adjustExplanation(explanation, newCorrectIndex) {
+            if (!explanation) return explanation;
+            const newAnswerChar = String.fromCharCode(65 + newCorrectIndex);
+            // Thay thế cụm "Đáp án đúng là X" (X là A, B, C, D) bằng "Đáp án đúng là Y"
+            // Sử dụng biểu thức chính quy toàn cục (g) để thay thế tất cả, nhưng thường chỉ có một lần.
+            const regex = /Đáp án đúng là [A-D]/g;
+            // Nếu tìm thấy, thay thế tất cả
+            if (explanation.match(regex)) {
+                return explanation.replace(regex, `Đáp án đúng là ${newAnswerChar}`);
+            }
+            // Nếu không, trả về nguyên bản
+            return explanation;
+        }
+
+        // Hàm khởi tạo
+        function init() {
+            // Tạo mảng chỉ số và xáo trộn
+            shuffledIndices = Array.from({length: questions.length}, (_, i) => i);
+            shuffleArray(shuffledIndices);
+            
+            // Tạo bản sao câu hỏi đã xáo trộn
+            shuffledQuestions = shuffledIndices.map(i => {
+                const q = {...questions[i]};
+                // Xáo trộn đáp án cho mỗi câu hỏi
+                const options = [...q.options];
+                const correctAnswer = options[q.correctAnswer];
+                const shuffledOptions = shuffleArray([...options]);
+                const newCorrectAnswer = shuffledOptions.indexOf(correctAnswer);
+                
+                // Điều chỉnh giải thích để khớp với đáp án mới
+                const adjustedExplanation = adjustExplanation(q.explanation, newCorrectAnswer);
+                
+                return {
+                    ...q,
+                    options: shuffledOptions,
+                    correctAnswer: newCorrectAnswer,
+                    explanation: adjustedExplanation,
+                    originalIndex: i
+                };
+            });
+            
+            // Đặt lại câu trả lời của người dùng
+            userAnswers = new Array(questions.length).fill(null);
+            score = 0;
+            currentQuestionIndex = 0;
+            
+            // Cập nhật giao diện
+            updateScore();
+            displayQuestion();
+            updateNavigationButtons();
+            
+            // Bắt đầu đếm thời gian
+            startTimer();
+            
+            // Ẩn kết quả nếu đang hiển thị
+            document.getElementById('result-container').style.display = 'none';
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('restartBtn').style.display = 'none';
+            document.getElementById('nextBtn').style.display = 'inline-block';
+        }
+
+        // Hàm xáo trộn mảng (Fisher-Yates shuffle)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Hàm bắt đầu đếm thời gian
+        function startTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 120 * 60; // 120 phút
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitQuiz();
+                }
+            }, 1000);
+            
+            updateTimerDisplay();
+        }
+
+        // Hàm cập nhật hiển thị thời gian
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+
+        // Hàm hiển thị câu hỏi hiện tại
+        function displayQuestion() {
+            const question = shuffledQuestions[currentQuestionIndex];
+            const questionNumber = currentQuestionIndex + 1;
+            
+            // Cập nhật số câu hỏi
+            document.getElementById('q-number').textContent = questionNumber;
+            document.getElementById('current-question').textContent = questionNumber;
+            document.getElementById('total-questions').textContent = questions.length;
+            
+            // Hiển thị câu hỏi
+            document.getElementById('question-text').textContent = question.question;
+            
+            // Hiển thị các lựa chọn
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.textContent = `${String.fromCharCode(65 + index)}. ${option}`;
+                
+                // Kiểm tra nếu người dùng đã chọn đáp án này
+                if (userAnswers[currentQuestionIndex] === index) {
+                    optionElement.classList.add('selected');
+                    
+                    // Hiển thị đúng/sai nếu đã chọn
+                    if (index === question.correctAnswer) {
+                        optionElement.classList.add('correct');
+                    } else {
+                        optionElement.classList.add('incorrect');
+                    }
+                }
+                
+                optionElement.addEventListener('click', () => selectOption(index));
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Hiển thị phản hồi nếu đã chọn đáp án
+            const feedbackElement = document.getElementById('feedback');
+            if (userAnswers[currentQuestionIndex] !== null) {
+                const isCorrect = userAnswers[currentQuestionIndex] === question.correctAnswer;
+                feedbackElement.textContent = question.explanation;
+                feedbackElement.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+                feedbackElement.style.display = 'block';
+            } else {
+                feedbackElement.style.display = 'none';
+            }
+        }
+
+        // Hàm chọn đáp án
+        function selectOption(optionIndex) {
+            // Chỉ cho phép chọn nếu chưa chọn đáp án
+            if (userAnswers[currentQuestionIndex] === null) {
+                userAnswers[currentQuestionIndex] = optionIndex;
+                
+                // Cập nhật điểm số
+                const question = shuffledQuestions[currentQuestionIndex];
+                if (optionIndex === question.correctAnswer) {
+                    score++;
+                    updateScore();
+                }
+                
+                // Hiển thị lại câu hỏi với phản hồi
+                displayQuestion();
+                
+                // Tự động chuyển đến câu tiếp theo sau 2 giây
+                setTimeout(() => {
+                    if (currentQuestionIndex < questions.length - 1) {
+                        currentQuestionIndex++;
+                        displayQuestion();
+                        updateNavigationButtons();
+                    } else {
+                        // Nếu là câu cuối cùng, hiển thị nút nộp bài
+                        document.getElementById('submitBtn').style.display = 'inline-block';
+                    }
+                }, 1500);
+            }
+        }
+
+        // Hàm cập nhật điểm số
+        function updateScore() {
+            document.getElementById('current-score').textContent = score;
+        }
+
+        // Hàm cập nhật nút điều hướng
+        function updateNavigationButtons() {
+            document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+            
+            // Ẩn nút tiếp theo nếu đã trả lời câu hỏi này
+            if (userAnswers[currentQuestionIndex] !== null && currentQuestionIndex < questions.length - 1) {
+                document.getElementById('nextBtn').style.display = 'inline-block';
+            } else if (currentQuestionIndex === questions.length - 1) {
+                document.getElementById('nextBtn').style.display = 'none';
+                if (userAnswers[currentQuestionIndex] !== null) {
+                    document.getElementById('submitBtn').style.display = 'inline-block';
+                }
+            }
+        }
+
+        // Hàm chuyển đến câu hỏi trước
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+                updateNavigationButtons();
+            }
+        }
+
+        // Hàm chuyển đến câu hỏi tiếp theo
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+                updateNavigationButtons();
+            }
+        }
+
+        // Hàm nộp bài
+        function submitQuiz() {
+            clearInterval(timerInterval);
+            
+            // Tính toán điểm số cuối cùng
+            const correctCount = score;
+            const percentage = Math.round((correctCount / questions.length) * 100);
+            
+            // Cập nhật hiển thị kết quả
+            document.getElementById('final-score').textContent = `${correctCount}/${questions.length}`;
+            document.getElementById('correct-count').textContent = correctCount;
+            document.getElementById('percentage').textContent = percentage;
+            
+            // Tính thời gian đã sử dụng
+            const timeUsed = 120 * 60 - timeLeft;
+            const minutesUsed = Math.floor(timeUsed / 60);
+            const secondsUsed = timeUsed % 60;
+            document.getElementById('time-taken').textContent = 
+                `${minutesUsed.toString().padStart(2, '0')}:${secondsUsed.toString().padStart(2, '0')}`;
+            
+            // Đánh giá kết quả
+            let evaluation = "";
+            if (percentage >= 90) evaluation = "Xuất sắc!";
+            else if (percentage >= 80) evaluation = "Rất tốt!";
+            else if (percentage >= 70) evaluation = "Tốt!";
+            else if (percentage >= 60) evaluation = "Đạt yêu cầu!";
+            else if (percentage >= 50) evaluation = "Cần cố gắng thêm!";
+            else evaluation = "Cần học lại kiến thức!";
+            
+            document.getElementById('evaluation').textContent = evaluation;
+            
+            // Cập nhật thanh tiến trình
+            document.getElementById('progress-bar').style.width = `${percentage}%`;
+            
+            // Hiển thị kết quả
+            document.getElementById('result-container').style.display = 'block';
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('restartBtn').style.display = 'inline-block';
+            
+            // Cuộn lên đầu trang để xem kết quả
+            window.scrollTo(0, 0);
+        }
+
+        // Sự kiện khi tải trang
+        document.addEventListener('DOMContentLoaded', () => {
+            init();
+            
+            // Gắn sự kiện cho các nút
+            document.getElementById('prevBtn').addEventListener('click', prevQuestion);
+            document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+            document.getElementById('submitBtn').addEventListener('click', submitQuiz);
+            document.getElementById('restartBtn').addEventListener('click', init);
+        });
+
+        // Hàm để xử lý phím tắt
+        document.addEventListener('keydown', (e) => {
+            // Chỉ xử lý nếu không đang nhập liệu vào ô input
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            
+            switch(e.key) {
+                case 'ArrowLeft':
+                    if (currentQuestionIndex > 0) {
+                        prevQuestion();
+                    }
+                    break;
+                case 'ArrowRight':
+                    if (currentQuestionIndex < questions.length - 1) {
+                        nextQuestion();
+                    }
+                    break;
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                    const optionIndex = parseInt(e.key) - 1;
+                    if (optionIndex >= 0 && optionIndex < 4) {
+                        selectOption(optionIndex);
+                    }
+                    break;
+                case 'Enter':
+                    if (document.getElementById('submitBtn').style.display === 'inline-block') {
+                        submitQuiz();
+                    }
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>
